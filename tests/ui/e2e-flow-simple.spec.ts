@@ -2,7 +2,8 @@ import { expect, test } from '@playwright/test'
 import { LoginPage } from '../pages/login-page'
 import { faker } from '@faker-js/faker/locale/ar'
 import { PASSWORD, USERNAME } from '../../config/env-data'
-import { OrderNotFoundPage } from '../pages/order-not-found'
+import { OrderNotFoundPage } from '../pages/order-not-found-page'
+import { OrderDetailsPage } from '../pages/order-details-page'
 
 test('signIn button disabled when incorrect data inserted', async ({ page }) => {
   const authPage = new LoginPage(page)
@@ -52,7 +53,7 @@ test('TL-18-3 Check footer on order not found page', async ({ page }) => {
   const orderPage = await loginPage.signIn(USERNAME, PASSWORD)
   await orderPage.statusButton.click()
   await orderPage.searchOrderInput.fill('12341234')
-  await orderPage.trackButton.click()
+  await orderPage.trackingButton.click()
   await notFoundPage.checkNotFoundTitle()
   await notFoundPage.checkFooterAttached()
   await notFoundPage.langButtonRu.checkVisible()
@@ -62,13 +63,27 @@ test('TL-18-3 Check footer on order not found page', async ({ page }) => {
   await notFoundPage.tosLink.checkVisible()
 })
 
-test('TL-18-4 Check footer on order not found page', async ({ page }) => {
+test('TL-18-4 Check order creation', async ({ page }) => {
   const loginPage = new LoginPage(page)
   await loginPage.open()
   const orderPage = await loginPage.signIn(USERNAME, PASSWORD)
   await orderPage.createOrder()
+  await orderPage.orderCreatedPopupOkButton.click()
+})
+
+test('TL-18-5 Check footer on order status page', async ({ page }) => {
+  const loginPage = new LoginPage(page)
+  const orderDetails = new OrderDetailsPage(page)
+  await loginPage.open()
+  const orderPage = await loginPage.signIn(USERNAME, PASSWORD)
   await orderPage.statusButton.click()
-  await orderPage.trackOrderStatus('123123')
+  await orderPage.trackOrderStatus('6220')
+  await expect(orderDetails.orderStatus).toHaveText('OPEN')
+  await orderDetails.langButtonRu.checkVisible()
+  await orderDetails.langButtonEn.checkVisible()
+  await orderDetails.privacyPolicyLink.checkVisible()
+  await orderDetails.cookiePolicyLink.checkVisible()
+  await orderDetails.tosLink.checkVisible()
 })
 
 test('TL-22-1 Mocked auth', async ({ page }) => {
@@ -156,7 +171,7 @@ test('TL-22-2 Mocked auth + order creation', async ({ page }) => {
   await orderPage.createOrderButton.click()
   await createOrderResponse
   await orderPage.checkCreatedOrderID(orderId)
-  await orderPage.orderCreatedModalOkButton.click()
+  await orderPage.orderCreatedPopupOkButton.click()
   await orderPage.statusButton.click()
   await orderPage.searchOrderInput.fill(`${orderId}`)
   const searchOrderResponse = page.waitForResponse(

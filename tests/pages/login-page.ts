@@ -1,9 +1,8 @@
-import { Page } from '@playwright/test'
+import { Locator, Page } from '@playwright/test'
 import { OrderPage } from './order-page'
 import { SERVICE_URL } from '../../config/env-data'
 import { Input } from '../atoms/Input'
 import { Button } from '../atoms/Button'
-import { Popup } from '../organisms/Popup'
 import { BasePage } from './base-page'
 
 export class LoginPage extends BasePage {
@@ -11,14 +10,14 @@ export class LoginPage extends BasePage {
   readonly signInButton: Button
   readonly usernameField: Input
   readonly passwordField: Input
-  readonly popupDialog: Popup
+  readonly popupDialog: Locator
 
   constructor(page: Page) {
     super(page)
     this.signInButton = new Button(page, '[data-name=signIn-button]')
     this.usernameField = new Input(page, '[data-name=username-input]')
     this.passwordField = new Input(page, '[data-name=password-input]')
-    this.popupDialog = new Popup(page, '[data-name=authorizationError-popup]')
+    this.popupDialog = page.locator('[data-name=authorizationError-popup]')
   }
 
   async open() {

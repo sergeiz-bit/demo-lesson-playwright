@@ -1,4 +1,4 @@
-import { test } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 import { LoginPage } from '../pages/login-page'
 import { faker } from '@faker-js/faker/locale/ar'
 import { PASSWORD, USERNAME } from '../../config/env-data'
@@ -20,7 +20,7 @@ test('error message displayed when incorrect credentials used', async ({}) => {
   await authPage.usernameField.fill(faker.internet.username())
   await authPage.passwordField.fill(faker.internet.password())
   await authPage.signInButton.click()
-  await authPage.popupDialog.toHaveTitle('Incorrect credentials')
+  await expect(authPage.popupDialog).toContainText('Incorrect credentials')
 })
 
 test('login with correct credentials and verify order creation page', async ({}) => {
@@ -39,5 +39,5 @@ test('login and create order', async ({}) => {
   await orderCreationPage.phoneField.fill(faker.phone.number())
   await orderCreationPage.commentField.fill(faker.word.words(1))
   await orderCreationPage.createOrderButton.click()
-  await orderCreationPage.statusModal.toHaveTitle('Order has been created!')
+  await expect(orderCreationPage.notificationPopupTitle).toContainText('Order has been created!')
 })
