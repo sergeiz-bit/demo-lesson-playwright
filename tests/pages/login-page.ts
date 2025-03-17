@@ -3,7 +3,7 @@ import { OrderPage } from './order-page'
 import { SERVICE_URL } from '../../config/env-data'
 import { Input } from '../atoms/Input'
 import { Button } from '../atoms/Button'
-import { Popup } from '../molecules/Popup'
+import { Popup } from '../organisms/Popup'
 import { BasePage } from './base-page'
 
 export class LoginPage extends BasePage {

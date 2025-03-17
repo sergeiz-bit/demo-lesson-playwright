@@ -13,5 +13,4 @@ export class Popup {
     await expect(this.popupLocator).toBeVisible()
     await expect(this.popupLocator).toContainText(title)
   }
-
 }

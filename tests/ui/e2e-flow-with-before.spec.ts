@@ -30,7 +30,7 @@ test('login with correct credentials and verify order creation page', async ({})
   await orderCreationPage.nameField.checkVisible();
   await orderCreationPage.phoneField.checkVisible();
   await orderCreationPage.commentField.checkVisible();
-  await orderCreationPage.orderButton.checkVisible();
+  await orderCreationPage.createOrderButton.checkVisible();
 })
 
 test('login and create order', async ({}) => {
@@ -38,7 +38,7 @@ test('login and create order', async ({}) => {
   await orderCreationPage.nameField.fill(faker.person.fullName())
   await orderCreationPage.phoneField.fill(faker.phone.number())
   await orderCreationPage.commentField.fill(faker.word.words(1));
-  await orderCreationPage.orderButton.click();
+  await orderCreationPage.createOrderButton.click();
   await orderCreationPage.statusModal.toHaveTitle('Order has been created!');
 
 })
