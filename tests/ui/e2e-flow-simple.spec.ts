@@ -77,7 +77,9 @@ test('TL-22-1 Mocked auth', async ({ page }) => {
   await page.route('**/login/student', async (route) => {
     const responseBody = 'test.test.test'
     await route.fulfill({
-      status: 200, contentType: 'application/json', body: responseBody,
+      status: 200,
+      contentType: 'application/json',
+      body: responseBody,
     })
   })
 
@@ -92,13 +94,14 @@ test('TL-22-2 Mocked auth + order creation', async ({ page }) => {
   const comment = 'zxcvcxzvvczb'
   const orderId = 6010
 
-
   const authPage = new LoginPage(page)
   await authPage.open()
   await page.route('**/login/student', async (route) => {
     const responseBody = 'test.test.test'
     await route.fulfill({
-      status: 200, contentType: 'application/json', body: responseBody,
+      status: 200,
+      contentType: 'application/json',
+      body: responseBody,
     })
   })
 
@@ -109,46 +112,57 @@ test('TL-22-2 Mocked auth + order creation', async ({ page }) => {
   await orderPage.phoneField.fill(phone)
   await orderPage.commentField.fill(comment)
   await orderPage.createOrderButton.checkDisabled(false)
-  await page.route('**/orders', async route => {
-
+  await page.route('**/orders', async (route) => {
     const method = route.request().method()
     switch (method) {
       case 'POST': {
         const responseBody = {
-          status: 'OPEN', courierId: null, customerName: name, customerPhone: phone, comment: comment, id: orderId,
+          status: 'OPEN',
+          courierId: null,
+          customerName: name,
+          customerPhone: phone,
+          comment: comment,
+          id: orderId,
         }
         return await route.fulfill({
-          status: 200, contentType: 'application/json',
+          status: 200,
+          contentType: 'application/json',
           body: JSON.stringify(responseBody),
-
         })
       }
       case 'GET': {
         const responseBody = {
-          status: 'OPEN', courierId: null, customerName: name, customerPhone: phone, comment: comment, id: orderId,
+          status: 'OPEN',
+          courierId: null,
+          customerName: name,
+          customerPhone: phone,
+          comment: comment,
+          id: orderId,
         }
         return await route.fulfill({
-          status: 200, contentType: 'application/json',
+          status: 200,
+          contentType: 'application/json',
           body: JSON.stringify(responseBody),
-
         })
-
       }
       default: {
         return await route.continue()
       }
     }
   })
-    const createOrderResponse = page.waitForResponse(response => response.url().includes('orders') && response.request().method() === 'POST');
-    await orderPage.createOrderButton.click();
-    await createOrderResponse;
-    await orderPage.checkCreatedOrderID(orderId);
-    await orderPage.orderCreatedModalOkButton.click();
-    await orderPage.statusButton.click();
-    await orderPage.searchOrderInput.fill(`${orderId}`);
-    const searchOrderResponse = page.waitForResponse(response => response.url().includes('orders') && response.request().method() === 'GET')
-    await orderPage.trackingButton.click();
-    await searchOrderResponse;
-    expect(page.url().includes(`${orderId}`)).toBeTruthy();
-
+  const createOrderResponse = page.waitForResponse(
+    (response) => response.url().includes('orders') && response.request().method() === 'POST',
+  )
+  await orderPage.createOrderButton.click()
+  await createOrderResponse
+  await orderPage.checkCreatedOrderID(orderId)
+  await orderPage.orderCreatedModalOkButton.click()
+  await orderPage.statusButton.click()
+  await orderPage.searchOrderInput.fill(`${orderId}`)
+  const searchOrderResponse = page.waitForResponse(
+    (response) => response.url().includes('orders') && response.request().method() === 'GET',
+  )
+  await orderPage.trackingButton.click()
+  await searchOrderResponse
+  expect(page.url().includes(`${orderId}`)).toBeTruthy()
 })

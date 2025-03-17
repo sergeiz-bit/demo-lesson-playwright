@@ -2,7 +2,7 @@ import { expect, Locator, Page } from '@playwright/test'
 import { Button } from '../atoms/Button'
 import { Link } from '../atoms/Link'
 
-export class BasePage{
+export class BasePage {
   readonly page: Page
   readonly footer: Locator
   readonly langButtonRu: Button
@@ -13,7 +13,7 @@ export class BasePage{
 
   protected constructor(page: Page) {
     this.page = page
-    this.footer= this.page.locator('.Footer')
+    this.footer = this.page.locator('.Footer')
     this.langButtonRu = new Button(this.page, '.language__button:has-text("RU")')
     this.langButtonEn = new Button(this.page, '.language__button:has-text("EN")')
     this.privacyPolicyLink = new Link(this.page, '[href="/pdf/politics.pdf"]')

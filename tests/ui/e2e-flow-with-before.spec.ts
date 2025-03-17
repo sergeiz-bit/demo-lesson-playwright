@@ -27,18 +27,17 @@ test('login with correct credentials and verify order creation page', async ({})
   const orderCreationPage = await authPage.signIn(USERNAME, PASSWORD)
   await orderCreationPage.statusButton.checkVisible()
   await orderCreationPage.statusButton.checkDisabled(false)
-  await orderCreationPage.nameField.checkVisible();
-  await orderCreationPage.phoneField.checkVisible();
-  await orderCreationPage.commentField.checkVisible();
-  await orderCreationPage.createOrderButton.checkVisible();
+  await orderCreationPage.nameField.checkVisible()
+  await orderCreationPage.phoneField.checkVisible()
+  await orderCreationPage.commentField.checkVisible()
+  await orderCreationPage.createOrderButton.checkVisible()
 })
 
 test('login and create order', async ({}) => {
   const orderCreationPage = await authPage.signIn(USERNAME, PASSWORD)
   await orderCreationPage.nameField.fill(faker.person.fullName())
   await orderCreationPage.phoneField.fill(faker.phone.number())
-  await orderCreationPage.commentField.fill(faker.word.words(1));
-  await orderCreationPage.createOrderButton.click();
-  await orderCreationPage.statusModal.toHaveTitle('Order has been created!');
-
+  await orderCreationPage.commentField.fill(faker.word.words(1))
+  await orderCreationPage.createOrderButton.click()
+  await orderCreationPage.statusModal.toHaveTitle('Order has been created!')
 })

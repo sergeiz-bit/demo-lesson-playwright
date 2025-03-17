@@ -11,14 +11,13 @@ export class OrderPage extends BasePage {
   readonly nameField: Input
   readonly phoneField: Input
   readonly commentField: Input
-  readonly statusModal: Popup;
-  readonly searchOrderInput: Input;
-  readonly trackButton: Button;
+  readonly statusModal: Popup
+  readonly searchOrderInput: Input
+  readonly trackButton: Button
   readonly orderCreatedModal: Popup
   readonly orderCreatedModalOkButton: Button
-  readonly trackingButton: Button;
-  readonly notificationPopupText: Locator;
-
+  readonly trackingButton: Button
+  readonly notificationPopupText: Locator
 
   constructor(page: Page) {
     super(page)
@@ -29,29 +28,33 @@ export class OrderPage extends BasePage {
     this.createOrderButton = new Button(page, '[data-name="createOrder-button"]')
     this.statusModal = new Popup(page, 'searchOrder-popup')
     this.searchOrderInput = new Input(page, '[data-name="searchOrder-popup"] input')
-    this.trackButton = new Button(page, '[data-name="searchOrder-popup"] button.order-search-popup__button')
+    this.trackButton = new Button(
+      page,
+      '[data-name="searchOrder-popup"] button.order-search-popup__button',
+    )
     this.orderCreatedModal = new Popup(page, '#orderSuccessfullyCreated-popup')
-    this.orderCreatedModalOkButton = new Button(page, '[data-name="orderSuccessfullyCreated-popup-ok-button"]')
+    this.orderCreatedModalOkButton = new Button(
+      page,
+      '[data-name="orderSuccessfullyCreated-popup-ok-button"]',
+    )
     this.trackingButton = new Button(page, '[data-name="searchOrder-submitButton"]')
     this.notificationPopupText = page.locator('span.notification-popup__text')
-
   }
 
-  async createOrder(): Promise<void>{
+  async createOrder(): Promise<void> {
     await this.nameField.fill(faker.person.fullName())
 
     await this.phoneField.fill(faker.phone.number())
-    await this.commentField.fill(faker.word.words(1));
-    await this.createOrderButton.click();
+    await this.commentField.fill(faker.word.words(1))
+    await this.createOrderButton.click()
   }
 
-  async trackOrderStatus(orderNumber: string):Promise<void>{
-    await this.searchOrderInput.fill(orderNumber);
-    await this.trackButton.click();
+  async trackOrderStatus(orderNumber: string): Promise<void> {
+    await this.searchOrderInput.fill(orderNumber)
+    await this.trackButton.click()
   }
 
   async checkCreatedOrderID(id: number): Promise<void> {
-    expect(await this.notificationPopupText.innerText()).toContain(`${id}`);
+    expect(await this.notificationPopupText.innerText()).toContain(`${id}`)
   }
-
 }

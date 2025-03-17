@@ -33,5 +33,4 @@ export class LoginPage extends BasePage {
     await this.signInButton.click()
     return new OrderPage(this.page)
   }
-
 }

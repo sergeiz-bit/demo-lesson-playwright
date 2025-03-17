@@ -19,8 +19,7 @@ export class Button {
 
   async checkDisabled(expected: boolean): Promise<void> {
     if (expected) {
-      await expect(this.buttonLocator).toBeDisabled();
-    } else
-      await expect(this.buttonLocator).toBeEnabled();
+      await expect(this.buttonLocator).toBeDisabled()
+    } else await expect(this.buttonLocator).toBeEnabled()
   }
 }
